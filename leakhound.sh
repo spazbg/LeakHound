@@ -231,17 +231,19 @@ display_usage() {
   echo "  -warez               Search on Warez sites"
   echo "  -paste               Search on Paste Bin sites"
   echo "  -r <rate_limit>      Limit the number of sites in the output"
+  echo "  -e <search_engine>   Specify the search engine (google, bing, or yandex)"
   echo ""
   echo "Examples:"
   echo "  $0 -d \"some_string\" -warez"
-  echo "  $0 -d \"string1 OR string2\" -paste"
-  echo "  $0 -d \"string1 AND string2\" -warez -r 3"
+  echo "  $0 -d \"string1 OR string2\" -paste -e bing"
+  echo "  $0 -d \"string1 AND string2\" -warez -r 3 -e yandex"
 }
 
 # Parse command line arguments
 search_terms=""
 site_type=""
 rate_limit=""
+search_engine="google"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -259,6 +261,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     -r)
       rate_limit="$2"
+      shift 2
+      ;;
+    -e)
+      search_engine="$2"
       shift 2
       ;;
     *)
@@ -310,7 +316,7 @@ for term in "${terms[@]}"; do
   esac
 done
 
-# Generate and print Google search URLs
+# Generate and print search URLs based on the selected search engine
 if [[ "$site_type" == "warez" ]]; then
   sites=("${warez_sites[@]}")
 else
@@ -319,7 +325,21 @@ fi
 
 count=0
 for site in "${sites[@]}"; do
-  echo "https://www.google.com/search?q=${encoded_terms}+site:${site}"
+  case "$search_engine" in
+    google)
+      echo "https://www.google.com/search?q=${encoded_terms}+site:${site}"
+      ;;
+    bing)
+      echo "https://www.bing.com/search?q=${encoded_terms}+site:${site}"
+      ;;
+    yandex)
+      echo "https://yandex.com/search/?text=${encoded_terms}+site:${site}"
+      ;;
+    *)
+      echo "Invalid search engine: $search_engine"
+      exit 1
+      ;;
+  esac
   count=$((count + 1))
   if [[ -n "$rate_limit" && $count -eq $rate_limit ]]; then
     break

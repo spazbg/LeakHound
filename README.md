@@ -16,6 +16,7 @@ LeakHound is a powerful bash script that automates the process of searching for 
 - Allows using complex search terms with AND/OR operators
 - Generates Google search URLs with the specified search terms and site filters
 - Provides an option to limit the number of sites in the output
+- Supports multiple search engines: Google (default), Bing, and Yandex
 - Easy to use command-line interface
 
 ## Usage
@@ -26,6 +27,7 @@ LeakHound is a powerful bash script that automates the process of searching for 
 - `-warez`: Search for leaks on warez sites
 - `-paste`: Search for leaks on paste bin sites
 - `-r <rate_limit>`: Limit the number of sites in the output
+- `-e <search_engine>`: Specify the search engine to use (google, bing, or yandex)
 
 ## Examples
 - Search for leaks containing the term "confidential" on warez sites:  
@@ -34,3 +36,7 @@ LeakHound is a powerful bash script that automates the process of searching for 
 ```./leakhound.sh -d "username OR password" -paste```
 - Search for leaks containing both "API" and "key" on warez sites, limiting the output to 5 sites:  
 ```./leakhound.sh -d "API AND key" -warez -r 5```
+- Search for leaks containing "foo@bar.com" on warez sites using Bing:  
+  ```./leakhound.sh -d "foo@bar.com" -warez -e bing```
+- Search for leaks containing either "username" and "password" on paste bin sites using Yandex:  
+```./leakhound.sh -d "username AND password" -paste -e yandex```

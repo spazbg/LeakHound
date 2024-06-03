@@ -1,0 +1,2 @@
+# Exclude WebStorm IDE files
+.idea/

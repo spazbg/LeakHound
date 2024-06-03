@@ -230,7 +230,7 @@ display_usage() {
   echo "  -d <search_terms>    Specify the search terms or Google dorks"
   echo "  -warez               Search on Warez sites"
   echo "  -paste               Search on Paste Bin sites"
-  echo "  -r <rate_limit>      Limit the number of sites in the output"
+  echo "  -r <results_limit>   Limit the number of generated results in the output"
   echo "  -e <search_engine>   Specify the search engine (google, bing, or yandex)"
   echo ""
   echo "Examples:"
@@ -242,7 +242,7 @@ display_usage() {
 # Parse command line arguments
 search_terms=""
 site_type=""
-rate_limit=""
+results_limit=""
 search_engine="google"
 
 while [[ $# -gt 0 ]]; do
@@ -260,7 +260,7 @@ while [[ $# -gt 0 ]]; do
       shift
       ;;
     -r)
-      rate_limit="$2"
+      results_limit="$2"
       shift 2
       ;;
     -e)
@@ -276,7 +276,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Check if no options are provided
-if [[ -z "$search_terms" && -z "$site_type" && -z "$rate_limit" ]]; then
+if [[ -z "$search_terms" && -z "$site_type" && -z "$results_limit" ]]; then
   display_usage
   exit 0
 fi
@@ -341,7 +341,7 @@ for site in "${sites[@]}"; do
       ;;
   esac
   count=$((count + 1))
-  if [[ -n "$rate_limit" && $count -eq $rate_limit ]]; then
+  if [[ -n "$results_limit" && $count -eq $results_limit ]]; then
     break
   fi
 done
